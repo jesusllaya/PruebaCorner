@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PruebaAgilModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Tareas">
+          <Key>
+            <PropertyRef Name="id_tarea" />
+          </Key>
+          <Property Name="id_tarea" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreTarea" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'PruebaAgil.dbo.TareasXTipoProyecto' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="TareasXTipoProyecto">
+          <Key>
+            <PropertyRef Name="id_tipoProyecto" />
+            <PropertyRef Name="id_tarea" />
+            <PropertyRef Name="numPreOrden" />
+          </Key>
+          <Property Name="id_tipoProyecto" Type="int" Nullable="false" />
+          <Property Name="id_tarea" Type="int" Nullable="false" />
+          <Property Name="numPreOrden" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoProyecto">
+          <Key>
+            <PropertyRef Name="id_tipoProyecto" />
+          </Key>
+          <Property Name="id_tipoProyecto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombreTipoProyecto" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_TareasXTipoProyecto_Tareas">
+          <End Role="Tareas" Type="Self.Tareas" Multiplicity="1" />
+          <End Role="TareasXTipoProyecto" Type="Self.TareasXTipoProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tareas">
+              <PropertyRef Name="id_tarea" />
+            </Principal>
+            <Dependent Role="TareasXTipoProyecto">
+              <PropertyRef Name="id_tarea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TareasXTipoProyecto_TipoProyecto">
+          <End Role="TipoProyecto" Type="Self.TipoProyecto" Multiplicity="1" />
+          <End Role="TareasXTipoProyecto" Type="Self.TareasXTipoProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoProyecto">
+              <PropertyRef Name="id_tipoProyecto" />
+            </Principal>
+            <Dependent Role="TareasXTipoProyecto">
+              <PropertyRef Name="id_tipoProyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaAgilModelStoreContainer">
+          <EntitySet Name="Tareas" EntityType="Self.Tareas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoProyecto" EntityType="Self.TipoProyecto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TareasXTipoProyecto" EntityType="Self.TareasXTipoProyecto" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TareasXTipoProyecto].[id_tipoProyecto] AS [id_tipoProyecto], 
+    [TareasXTipoProyecto].[id_tarea] AS [id_tarea], 
+    [TareasXTipoProyecto].[numPreOrden] AS [numPreOrden]
+    FROM [dbo].[TareasXTipoProyecto] AS [TareasXTipoProyecto]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_TareasXTipoProyecto_Tareas" Association="Self.FK_TareasXTipoProyecto_Tareas">
+            <End Role="Tareas" EntitySet="Tareas" />
+            <End Role="TareasXTipoProyecto" EntitySet="TareasXTipoProyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TareasXTipoProyecto_TipoProyecto" Association="Self.FK_TareasXTipoProyecto_TipoProyecto">
+            <End Role="TipoProyecto" EntitySet="TipoProyecto" />
+            <End Role="TareasXTipoProyecto" EntitySet="TareasXTipoProyecto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PruebaAgilModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Tareas">
+          <Key>
+            <PropertyRef Name="id_tarea" />
+          </Key>
+          <Property Name="id_tarea" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreTarea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TareasXTipoProyecto" Relationship="Self.FK_TareasXTipoProyecto_Tareas" FromRole="Tareas" ToRole="TareasXTipoProyecto" />
+        </EntityType>
+        <EntityType Name="TipoProyecto">
+          <Key>
+            <PropertyRef Name="id_tipoProyecto" />
+          </Key>
+          <Property Name="id_tipoProyecto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombreTipoProyecto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TareasXTipoProyecto" Relationship="Self.FK_TareasXTipoProyecto_TipoProyecto" FromRole="TipoProyecto" ToRole="TareasXTipoProyecto" />
+        </EntityType>
+        <EntityType Name="TareasXTipoProyecto">
+          <Key>
+            <PropertyRef Name="id_tipoProyecto" />
+            <PropertyRef Name="id_tarea" />
+            <PropertyRef Name="numPreOrden" />
+          </Key>
+          <Property Name="id_tipoProyecto" Type="Int32" Nullable="false" />
+          <Property Name="id_tarea" Type="Int32" Nullable="false" />
+          <Property Name="numPreOrden" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Tareas" Relationship="Self.FK_TareasXTipoProyecto_Tareas" FromRole="TareasXTipoProyecto" ToRole="Tareas" />
+          <NavigationProperty Name="TipoProyecto" Relationship="Self.FK_TareasXTipoProyecto_TipoProyecto" FromRole="TareasXTipoProyecto" ToRole="TipoProyecto" />
+        </EntityType>
+        <Association Name="FK_TareasXTipoProyecto_Tareas">
+          <End Role="Tareas" Type="Self.Tareas" Multiplicity="1" />
+          <End Role="TareasXTipoProyecto" Type="Self.TareasXTipoProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tareas">
+              <PropertyRef Name="id_tarea" />
+            </Principal>
+            <Dependent Role="TareasXTipoProyecto">
+              <PropertyRef Name="id_tarea" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TareasXTipoProyecto_TipoProyecto">
+          <End Role="TipoProyecto" Type="Self.TipoProyecto" Multiplicity="1" />
+          <End Role="TareasXTipoProyecto" Type="Self.TareasXTipoProyecto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoProyecto">
+              <PropertyRef Name="id_tipoProyecto" />
+            </Principal>
+            <Dependent Role="TareasXTipoProyecto">
+              <PropertyRef Name="id_tipoProyecto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PruebaAgilEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Tareas" EntityType="Self.Tareas" />
+          <EntitySet Name="TipoProyecto" EntityType="Self.TipoProyecto" />
+          <EntitySet Name="TareasXTipoProyecto" EntityType="Self.TareasXTipoProyecto" />
+          <AssociationSet Name="FK_TareasXTipoProyecto_Tareas" Association="Self.FK_TareasXTipoProyecto_Tareas">
+            <End Role="Tareas" EntitySet="Tareas" />
+            <End Role="TareasXTipoProyecto" EntitySet="TareasXTipoProyecto" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TareasXTipoProyecto_TipoProyecto" Association="Self.FK_TareasXTipoProyecto_TipoProyecto">
+            <End Role="TipoProyecto" EntitySet="TipoProyecto" />
+            <End Role="TareasXTipoProyecto" EntitySet="TareasXTipoProyecto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PruebaAgilModelStoreContainer" CdmEntityContainer="PruebaAgilEntities">
+          <EntitySetMapping Name="Tareas">
+            <EntityTypeMapping TypeName="PruebaAgilModel.Tareas">
+              <MappingFragment StoreEntitySet="Tareas">
+                <ScalarProperty Name="id_tarea" ColumnName="id_tarea" />
+                <ScalarProperty Name="nombreTarea" ColumnName="nombreTarea" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoProyecto">
+            <EntityTypeMapping TypeName="PruebaAgilModel.TipoProyecto">
+              <MappingFragment StoreEntitySet="TipoProyecto">
+                <ScalarProperty Name="id_tipoProyecto" ColumnName="id_tipoProyecto" />
+                <ScalarProperty Name="nombreTipoProyecto" ColumnName="nombreTipoProyecto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TareasXTipoProyecto">
+            <EntityTypeMapping TypeName="PruebaAgilModel.TareasXTipoProyecto">
+              <MappingFragment StoreEntitySet="TareasXTipoProyecto">
+                <ScalarProperty Name="id_tipoProyecto" ColumnName="id_tipoProyecto" />
+                <ScalarProperty Name="id_tarea" ColumnName="id_tarea" />
+                <ScalarProperty Name="numPreOrden" ColumnName="numPreOrden" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

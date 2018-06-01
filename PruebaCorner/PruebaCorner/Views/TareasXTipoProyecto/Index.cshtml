@@ -1,0 +1,71 @@
+﻿@model PruebaCorner.Models.TareasXTipoProyectoModels
+
+<br /><br />
+<div class="container">
+    <div class="form-group">
+        @if (ViewBag.listaTipoProyectos != null)
+        {
+            @Html.DropDownListFor(Model => Model.id_tipoProyecto, ViewBag.listaTipoProyectos as SelectList, "--Seleccione Tipo de Proyecto--", new {@id="ddl_tipoProyecto" ,@class = "form-control" })
+        }
+    </div>
+    <div class="form-group">
+        <table class="table" id="tablaTareas">
+            <thead>
+                <tr>
+                    <th>Codigo Tarea</th>
+                    <th>Descripcion</th>
+                    <th>Num. Pre Orden</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (TareasXTipoProyecto item in ViewBag.listaTodasTareas)
+                {
+                    <tr>
+                        <th>@item.id_tarea</th>
+                        <th>prueba</th>
+                        <th>@item.numPreOrden</th>
+                    </tr>
+                    
+                }
+            </tbody>
+        </table>
+        @*@Html.DropDownListFor(Model => Model.id_tipoProyecto, ViewBag.listaTipoProyectos as SelectList, "--Seleccione Tipo de Proyecto", new { @class = "form-control" })*@
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#ddl_tipoProyecto").change(function () {
+            rellenarTabla("#tablaTareas", $("#ddl_tipoProyecto").val());
+        });
+    });
+</script>
+
+@*<script type="text/javascript">
+    function rellenarTabla(idTabla, idTipoProyecto) {
+        $.getJSON("<%=Url.Action("TareasXTipoProyecto") %>"
+                + "/"+idTipoProyecto,
+                function(data){
+                    $("#"+idTabla).empty();
+                    $.each(data,function(i,item){
+                        $("#"+idTabla).append("<tr>"+it.]+"</tr>")
+                    }
+                }
+            );
+    }
+</script>*@
+
+
+
+@*<script>
+    $(document).ready(function () {
+        $("#id_tipoProyecto").change(function () {
+            $.get("/TareasXTipoProyecto/GetTablaTareasXTipo", {id_tipoProyecto: $("#id_tipoProyecto").val()},function(data){
+                $.each(data, function (index, row) {
+
+                })
+            })
+        })
+    });
+</script>*@

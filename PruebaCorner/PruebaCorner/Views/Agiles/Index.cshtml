@@ -1,0 +1,61 @@
+﻿@model PruebaCorner.Models.ModeloGeneralModels
+
+
+
+
+   
+  
+
+
+
+
+
+@using (Html.BeginForm("Index", "Agiles", FormMethod.Post, new { @id = "miForm" }))
+{
+    <p>
+        <label>Tipos de Proyectos</label>
+        @Html.DropDownListFor(x => x.listaTipos, Model.listaTipos as SelectList, "--Seleccione Tipo de Proyecto--", new { @id = "ddl_tipoProyecto", @class = "form-control" })
+    </p>
+
+
+            var lista = ViewBag.algo;
+        <label>Tareas</label>
+        <table class="table">
+            <thead></thead>
+            <tbody>
+
+                @foreach (var tar in lista)
+                {
+                    <tr>
+                        <th>@tar.id_tarea</th>
+                        <th>@tar.nombreTarea</th>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+
+}
+
+
+
+
+
+
+
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(function () {
+                $("#ddl_tipoProyecto").change(function () {
+                    alert("ENTRA A JQUERY");
+                    $("#miForm").submit(3);
+                });
+            });
+        });
+    </script>
+}
